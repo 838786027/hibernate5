@@ -19,18 +19,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		setup();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-	
-		Query query=session.createSQLQuery("select * from car_data");
-		List list=query.list();
-		System.out.println(list);
-		List<CarData> list2=session.createQuery("from CarData").list();
-		System.out.println(list2);
-		
-		session.getTransaction().commit();
-		session.close();
-
+		save();
 	}
 
 	public static void setup() {
@@ -46,5 +35,30 @@ public class Main {
 			StandardServiceRegistryBuilder.destroy(registry);
 		}
 	}
-
+	
+	public static void list(){
+		Session session = sessionFactory.openSession();
+		Query query=session.createSQLQuery("select * from car_data");
+		List<CarData> list=query.list();
+		System.out.println(list);
+		List<CarData> list2=session.createQuery("from CarData").list();
+		System.out.println(list2);
+		session.close();
+	}
+	
+	public static void save(){
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		CarBelong carBelong=new CarBelong();
+		carBelong.setId(2);
+		carBelong.setIsLocalCity(0);
+		carBelong.setIsLocalProvince(0);
+		carBelong.setIsOuterProvince(0);
+		carBelong.setCity("深圳");
+		carBelong.setProvince("广东");
+		carBelong.setCarNumPrefix("粤B");
+		session.save(carBelong);
+		session.getTransaction().commit();
+		session.close();
+	}
 }
